@@ -1,0 +1,17 @@
+---
+version: '3.5'
+services:
+  molecule:
+    image: nl2go/molecule:3.0.2-n2g-1.0.1
+    tty: true
+    volumes:
+      - ${MOLECULE_PROJECT_DIR}:/molecule/${MOLECULE_ROLE_NAME}
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /molecule/${MOLECULE_ROLE_NAME}
+    command: /bin/ash -c '[ ! -f /molecule/${MOLECULE_ROLE_NAME}/requirements.txt ] || pip install -r /molecule/${MOLECULE_ROLE_NAME}/requirements.txt && /bin/ash'
+    networks:
+      - molecule
+
+networks:
+  molecule:
+    name: molecule

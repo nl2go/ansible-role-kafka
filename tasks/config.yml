@@ -1,0 +1,13 @@
+---
+- name: Create kafka config dir
+  file:
+    path: "{{ kafka_conf_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Create kafka server properties file
+  template:
+    src: server.properties.j2
+    dest: "{{ kafka_conf_dir }}/server.properties"
+    mode: '0644'
+  notify: Reload kafka

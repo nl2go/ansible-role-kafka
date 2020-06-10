@@ -1,0 +1,5 @@
+---
+  - import_tasks: install.yml
+    tags: [kafka, kafka_install, install]
+  - import_tasks: config.yml
+    tags: [kafka, kafka_config, config]

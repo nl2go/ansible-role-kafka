@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Apache Kafka service
+
+[Service]
+Type=simple
+User=kafka
+ExecStart=/bin/sh -c '{{ kafka_install_dir }}/bin/kafka-server-start.sh {{ kafka_conf_dir }}/server.properties > {{ kafka_log_dir }}/kafka.log 2>&1'
+ExecStop={{ kafka_install_dir }}/bin/kafka-server-stop.sh
+Restart=on-abnormal
+
+[Install]
+WantedBy=multi-user.target

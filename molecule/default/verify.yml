@@ -1,0 +1,31 @@
+---
+- name: Verify kafka installation
+  hosts: all
+  tasks:
+    - name: Check that kafka log file exists
+      stat:
+        path: /var/log/kafka/kafka.log
+      register: stat_log_result
+      failed_when: not stat_log_result.stat.exists
+    - name: Add a topic to the kafka server
+      command: /usr/local/kafka/bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test_default
+      register: create_topic_result
+    - name: Verify topic creation return code
+      assert:
+        that:
+          - create_topic_result.rc == 0
+    - name: Verify topic creation output
+      assert:
+        that:
+          - "'Created topic test_default' in create_topic_result.stdout"
+    - name: List topics from the kafka server
+      command: /usr/local/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+      register: list_topics_result
+    - name: Verify topic listing return code
+      assert:
+        that:
+          - list_topics_result.rc == 0
+    - name: Verify created topic is in topic list
+      assert:
+        that:
+          - "'test_default' in list_topics_result.stdout"

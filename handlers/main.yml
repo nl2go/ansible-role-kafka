@@ -1,0 +1,5 @@
+---
+- name: Reload kafka
+  systemd:
+    name: kafka
+    state: reloaded

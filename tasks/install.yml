@@ -1,0 +1,56 @@
+---
+- name: Create kafka group
+  group:
+    name: '{{ kafka_group }}'
+    state: present
+
+- name: Create kafka user
+  user:
+    name: '{{ kafka_user }}'
+    group: '{{ kafka_group }}'
+    state: present
+    createhome: no
+
+- name: set kafka_archive_name variable
+  set_fact:
+    kafka_archive_name: "kafka_{{ kafka_scala_version }}-{{ kafka_version }}"
+
+- name: Unarchive kafka release package
+  unarchive:
+    src: http://www-eu.apache.org/dist/kafka/{{ kafka_version }}/{{ kafka_archive_name }}.tgz
+    dest: /usr/local
+    remote_src: yes
+    creates: "/usr/local/{{ kafka_archive_name }}"
+
+- name: Create a link to unarchived kafka destination
+  file:
+    src: "/usr/local/{{ kafka_archive_name }}"
+    dest: '{{ kafka_install_dir }}'
+    owner: '{{ kafka_user }}'
+    group: '{{ kafka_group }}'
+    state: link
+
+- name: Create kafka log dir
+  file:
+    path: "{{ kafka_log_dir }}"
+    state: directory
+    mode: '0755'
+    owner: '{{ kafka_user }}'
+    group: '{{ kafka_group }}'
+
+- name: Create kafka service
+  template:
+    src: kafka.service.j2
+    dest: "/etc/systemd/system/kafka.service"
+    mode: '0644'
+  register: kafka_service
+  notify: Reload kafka
+
+- name: Reload systemd
+  command: systemctl daemon-reload
+  when: kafka_service.changed
+
+- name: Enable kafka service
+  systemd:
+    name: kafka
+    enabled: yes

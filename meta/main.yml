@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: nl2go
+  role_name: kafka
+  description: An Ansible Role that manages installation and configuration of Apache kafka
+  company: Newsletter2Go GmbH
+  issue_tracker_url: https://github.com/nl2go/ansible-role-kafka/issues
+  license: MIT
+  min_ansible_version: 2.7
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+  galaxy_tags:
+    - apache
+    - kafka
+dependencies: []
