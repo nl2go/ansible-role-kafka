@@ -5,7 +5,12 @@ lint: |
   set -e
   yamllint .
 platforms:
-  - name: Ubuntu18
+  - name: debian10
+    image: debian:10
+    dockerfile: ../resources/Dockerfile.j2
+    networks:
+      - name: kafka-network
+  - name: ubuntu18
     image: ubuntu:18.04
     dockerfile: ../resources/Dockerfile.j2
     networks:
@@ -15,6 +20,19 @@ provisioner:
   lint: |
     set -e
     ansible-lint
+  inventory:
+    group_vars:
+      all:
+        kafka_version: 2.5.0
+    host_vars:
+      debian10:
+        kafka_broker_id: 1
+        kafka_zookeeper_connection_hosts:
+          - zookeeper-debian10:2182
+      ubuntu18:
+        kafka_broker_id: 2
+        kafka_zookeeper_connection_hosts:
+          - zookeeper-ubuntu18:2181
 verifier:
   name: ansible
   lint: |

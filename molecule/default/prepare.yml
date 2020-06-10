@@ -9,12 +9,25 @@
         url: https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py
         dest: /usr/bin/systemctl
         mode: '0775'
-    - name: Start zookeeper container
+    - name: Start zookeeper container for Ubuntu18 host
       docker_container:
-        name: zookeeper
+        name: zookeeper-ubuntu18
         image: confluentinc/cp-zookeeper:5.5.0
         ports:
           - "2181:2181"
+        env:
+          ZOOKEEPER_CLIENT_PORT: "2181"
+          ZOOKEEPER_TICK_TIME: "2000"
+        networks:
+          - name: kafka-network
+      delegate_to: localhost
+      run_once: true
+    - name: Start zookeeper container for Debian 10 host
+      docker_container:
+        name: zookeeper-debian10
+        image: confluentinc/cp-zookeeper:5.5.0
+        ports:
+          - "2182:2181"
         env:
           ZOOKEEPER_CLIENT_PORT: "2181"
           ZOOKEEPER_TICK_TIME: "2000"
