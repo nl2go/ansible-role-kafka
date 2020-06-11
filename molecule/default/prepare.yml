@@ -31,3 +31,7 @@
           - name: kafka-network
       delegate_to: localhost
       run_once: true
+    - name: Install additional packages needed for testing
+      apt:
+        name:
+          - net-tools
