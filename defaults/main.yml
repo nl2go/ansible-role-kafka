@@ -1,4 +1,6 @@
 ---
+kafka_apache_mirror_base_url: https://mirror.netcologne.de/apache.org
+
 kafka_user: kafka
 kafka_group: kafka
 
