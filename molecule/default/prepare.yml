@@ -35,3 +35,4 @@
       apt:
         name:
           - net-tools
+          - procps
