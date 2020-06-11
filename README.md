@@ -10,7 +10,7 @@ Kafka heavily depends on zookeeper which is not part of this role. To install zo
 
 ## Role Variables
 
-Available variables listed and described along with default values in `defaults/main.yml`.
+Available variables listed and described along with default values in [defaults/main.yml](defaults/main.yml).
 
 ## Dependencies
 
@@ -27,7 +27,8 @@ Available variables listed and described along with default values in `defaults/
 
 ## Set up monitoring for Kafka
 
-For enabling monitoring via JMX you have to create an environment file and set the environment variables used in the kafka startup script like this:
+For enabling monitoring via JMX you have to create an environment file and set the environment variables used in the kafka startup script
+according to your needs:
 
 ```
 JMX_PORT=1099
@@ -41,6 +42,8 @@ This file needs to be referenced in the `kafka_environment_file` then. Here is a
         - nl2go.kafka
       vars:
         kafka_environment_file: /etc/kafka/custom.env
+
+An overview of the variables used by Kafka can be found in the [Kafka startup script](https://github.com/apache/kafka/blob/trunk/bin/kafka-run-class.sh).
 
 ## Development
 

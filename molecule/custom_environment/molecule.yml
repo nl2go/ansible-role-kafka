@@ -1,0 +1,34 @@
+---
+driver:
+  name: docker
+lint: |
+  set -e
+  yamllint .
+platforms:
+  - name: ubuntu18
+    image: ubuntu:18.04
+    dockerfile: ../resources/Dockerfile.j2
+    networks:
+      - name: kafka-network
+provisioner:
+  name: ansible
+  lint: |
+    set -e
+    ansible-lint
+  inventory:
+    group_vars:
+      all:
+        kafka_version: 2.5.0
+    host_vars:
+      ubuntu18:
+        kafka_zookeeper_connection_hosts:
+          - zookeeper:2181
+verifier:
+  name: ansible
+  lint: |
+    set -e
+    ansible-lint
+dependency:
+  name: galaxy
+  options:
+    role-file: molecule/resources/requirements.yml

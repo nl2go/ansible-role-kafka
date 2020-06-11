@@ -11,7 +11,7 @@
     state: present
     createhome: no
 
-- name: set kafka_archive_name variable
+- name: Set kafka_archive_name variable
   set_fact:
     kafka_archive_name: "kafka_{{ kafka_scala_version }}-{{ kafka_version }}"
 

@@ -1,0 +1,45 @@
+---
+- name: Install required roles
+  hosts: all
+  roles:
+    - nl2go.openjdk
+  tasks:
+    - name: Prepare docker systemctl replacement script
+      get_url:
+        url: https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py
+        dest: /usr/bin/systemctl
+        mode: '0775'
+    - name: Start zookeeper container
+      docker_container:
+        name: zookeeper
+        image: confluentinc/cp-zookeeper:5.5.0
+        env:
+          ZOOKEEPER_CLIENT_PORT: "2181"
+          ZOOKEEPER_TICK_TIME: "2000"
+        networks:
+          - name: kafka-network
+      delegate_to: localhost
+      run_once: true
+    - name: Install additional packages needed for testing
+      apt:
+        name:
+          - net-tools
+          - procps
+    - name: Set JMX_PORT environment variable
+      lineinfile:
+        path: /etc/kafka/molecule.env
+        regexp: '^JMX_PORT='
+        line: JMX_PORT=1099
+        create: yes
+    - name: Set KAFKA_JMX_OPTS environment variable
+      lineinfile:
+        path: /etc/kafka/molecule.env
+        regexp: '^KAFKA_JMX_OPTS='
+        line: 'KAFKA_JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"'
+        create: yes
+    - name: Set KAFKA_HEAP_OPTS environment variable
+      lineinfile:
+        path: /etc/kafka/molecule.env
+        regexp: '^KAFKA_HEAP_OPTS='
+        line: 'KAFKA_HEAP_OPTS="-Xmx192M"'
+        create: yes
