@@ -4,7 +4,7 @@ kafka_group: kafka
 
 kafka_version: 2.5.0
 kafka_scala_version: 2.12
-kafka_broker_id: 1 # given the ansible hostname is unique it is recommended to use kafka_broker_id: "{{ inventory_hostname }}"
+kafka_broker_id: 1 # must be set to a unique integer for each broker
 
 kafka_install_dir: /usr/local/kafka
 kafka_conf_dir: /etc/kafka
