@@ -1,11 +1,10 @@
 ---
-
 kafka_user: kafka
 kafka_group: kafka
 
 kafka_version: 2.5.0
 kafka_scala_version: 2.12
-kafka_broker_id: 1
+kafka_broker_id: 1 # given the ansible hostname is unique it is recommended to use kafka_broker_id: "{{ inventory_hostname }}"
 
 kafka_install_dir: /usr/local/kafka
 kafka_conf_dir: /etc/kafka
@@ -99,3 +98,17 @@ kafka_zookeeper_connection_timeout_ms: 18000
 
 # The following configuration specifies the time, in milliseconds, that the GroupCoordinator will delay the initial consumer rebalance.
 kafka_group_initial_rebalance_delay_ms: 0
+
+############################# Kafka environment variables
+
+# Kafka leverages a lot of environment variables to control JVM settings, logging options, monitoring options, etc..
+# In order to use these variables for the kafka service create an environment file and address the respective file here.
+# If the file is defined it will be used in the EnvironmentFile setting of the systemd service.
+#
+# Sample file content for configuring JMX:
+# JMX_PORT=1099
+# KAFKA_JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+#
+# An overview of the variables used by kafka can be found in the kafka startup script here: https://github.com/apache/kafka/blob/trunk/bin/kafka-run-class.sh
+#
+# kafka_environment_file: /etc/kafka/kafka.env

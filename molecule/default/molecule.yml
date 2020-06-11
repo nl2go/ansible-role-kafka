@@ -26,11 +26,9 @@ provisioner:
         kafka_version: 2.5.0
     host_vars:
       debian10:
-        kafka_broker_id: 1
         kafka_zookeeper_connection_hosts:
           - zookeeper-debian10:2181
       ubuntu18:
-        kafka_broker_id: 2
         kafka_zookeeper_connection_hosts:
           - zookeeper-ubuntu18:2181
 verifier:

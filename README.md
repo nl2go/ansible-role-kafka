@@ -4,7 +4,13 @@
 
 # Ansible Role: Apache Kafka
 
-An Ansible Role that manages installation and configuration of [Apache kafka](https://kafka.apache.org/).
+An Ansible Role that manages installation and configuration of [Apache Kafka](https://kafka.apache.org/).
+
+Kafka heavily depends on zookeeper which is not part of this role. To install zoopeeper we recommend the nl2go [zookeeper role](https://github.com/nl2go/ansible-role-zookeeper): 
+
+## Role Variables
+
+Available variables listed and described along with default values in `defaults/main.yml`.
 
 ## Dependencies
 
@@ -15,6 +21,26 @@ An Ansible Role that manages installation and configuration of [Apache kafka](ht
     - hosts: all
       roles:
         - nl2go.kafka
+      vars:
+        kafka_zookeeper_connection_hosts:
+          - my.zookeeper.host:2181
+
+## Set up monitoring for Kafka
+
+For enabling monitoring via JMX you have to create an environment file and set the environment variables used in the kafka startup script like this:
+
+```
+JMX_PORT=1099
+KAFKA_JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+```
+
+This file needs to be referenced in the `kafka_environment_file` then. Here is an example playbook:
+
+    - hosts: all
+      roles:
+        - nl2go.kafka
+      vars:
+        kafka_environment_file: /etc/kafka/custom.env
 
 ## Development
 

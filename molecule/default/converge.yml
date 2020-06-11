@@ -4,3 +4,5 @@
   become: yes
   roles:
     - role: ansible-role-kafka
+  vars:
+    kafka_broker_id: "{{ inventory_hostname }}"
