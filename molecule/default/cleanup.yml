@@ -7,6 +7,7 @@
         name: zookeeper-ubuntu18
         image: confluentinc/cp-zookeeper:5.5.0
         state: stopped
+        purge_networks: yes
       delegate_to: localhost
       run_once: true
     - name: Stop zookeeper container for Debian 10
@@ -14,5 +15,6 @@
         name: zookeeper-debian10
         image: confluentinc/cp-zookeeper:5.5.0
         state: stopped
+        purge_networks: yes
       delegate_to: localhost
       run_once: true
