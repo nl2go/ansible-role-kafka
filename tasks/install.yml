@@ -43,12 +43,7 @@
     src: kafka.service.j2
     dest: "/etc/systemd/system/kafka.service"
     mode: '0644'
-  register: kafka_service
   notify: Reload kafka
-
-- name: Reload systemd
-  command: systemctl daemon-reload
-  when: kafka_service.changed
 
 - name: Enable kafka service
   systemd:

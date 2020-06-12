@@ -3,3 +3,7 @@
   systemd:
     name: kafka
     state: reloaded
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
