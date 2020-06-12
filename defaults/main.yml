@@ -104,8 +104,8 @@ kafka_group_initial_rebalance_delay_ms: 0
 ############################# Kafka environment variables
 
 # Kafka leverages a lot of environment variables to control JVM settings, logging options, monitoring options, etc..
-# In order to use these variables for the kafka service create an environment file and address the respective file here.
-# If the file is defined it will be used in the EnvironmentFile setting of the systemd service.
+# In order to set these variables for the kafka service use the optional 'kafka_environment_variables' setting.
+# When defined the respective variables will be written to an env file which will be used in the EnvironmentFile setting of the systemd service.
 #
 # Sample file content for configuring JMX:
 # JMX_PORT=1099
@@ -113,4 +113,10 @@ kafka_group_initial_rebalance_delay_ms: 0
 #
 # An overview of the variables used by kafka can be found in the kafka startup script here: https://github.com/apache/kafka/blob/trunk/bin/kafka-run-class.sh
 #
-# kafka_environment_file: /etc/kafka/kafka.env
+# Sample settings:
+# kafka_environment_variables:
+#   JMX_PORT: 1099
+#   KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+
+# Environment file that will be created by the role and used in the Kafka systemd service definition if kafka_environment_variables is defined
+kafka_environment_file: /etc/kafka/kafka.env

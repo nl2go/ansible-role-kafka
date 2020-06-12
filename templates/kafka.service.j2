@@ -9,7 +9,7 @@ User=kafka
 ExecStart=/bin/sh -c '{{ kafka_install_dir }}/bin/kafka-server-start.sh {{ kafka_conf_dir }}/server.properties > {{ kafka_log_dir }}/kafka.log 2>&1'
 ExecStop={{ kafka_install_dir }}/bin/kafka-server-stop.sh
 Restart=on-abnormal
-{% if kafka_environment_file is defined %}
+{% if kafka_environment_variables is defined %}
 EnvironmentFile={{ kafka_environment_file }}
 {% endif %}
 
