@@ -44,7 +44,7 @@
     regexp: '^{{ item.key }}='
     line: "{{ item.key }}={{ item.value }}"
     create: yes
-  loop: "{{ kafka_environment_variables|dict2items }}"
+  loop: "{{ kafka_environment_variables | default({}) | dict2items }}"
   when: kafka_environment_variables is defined
 
 - name: Create kafka service
