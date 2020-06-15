@@ -47,6 +47,11 @@ kafka_socket_request_max_bytes: 104857600
 # Maps listener names to security protocols, the default is for them to be the same. See the config documentation for more details
 #kafka_listener_security_protocol_map: "PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL"
 
+# Additional optional security and sasl related settings
+#security.inter.broker.protocol=PLAINTEXT
+#sasl.mechanism.inter.broker.protocol=PLAIN
+#sasl.enabled.mechanisms=PLAIN
+
 # The default number of log partitions per topic. More partitions allow greater
 # parallelism for consumption, but this will also result in more files across
 # the brokers.
@@ -120,3 +125,9 @@ kafka_group_initial_rebalance_delay_ms: 0
 
 # Environment file that will be created by the role and used in the Kafka systemd service definition if kafka_environment_variables is defined
 kafka_environment_file: /etc/kafka/kafka.env
+
+kafka_server_username: broker
+kafka_server_password: broker
+kafka_client_users:
+  - username: guest
+    password: guest

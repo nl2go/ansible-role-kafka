@@ -1,16 +1,4 @@
 ---
-- name: Create kafka group
-  group:
-    name: '{{ kafka_group }}'
-    state: present
-
-- name: Create kafka user
-  user:
-    name: '{{ kafka_user }}'
-    group: '{{ kafka_group }}'
-    state: present
-    createhome: no
-
 - name: Set kafka_archive_name variable
   set_fact:
     kafka_archive_name: "kafka_{{ kafka_scala_version }}-{{ kafka_version }}"
