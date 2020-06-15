@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.com/nl2go/ansible-role-kafka.svg?branch=master)](https://travis-ci.com/nl2go/ansible-role-kafka)
 [![Ansible Galaxy](https://img.shields.io/badge/role-nl2go.kafka-blue.svg)](https://galaxy.ansible.com/nl2go/kafka/)
-[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/nl2go/ansible-role-kafka)](https://galaxy.ansible.com/nl2go/kafka)
+[![Ansible Galaxy Quality Score](https://img.shields.io/ansible/quality/49219)](https://galaxy.ansible.com/nl2go/kafka/)
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/nl2go/ansible-role-kafka)](https://github.com/nl2go/ansible-role-kafka/releases)
 [![Ansible Galaxy Downloads](https://img.shields.io/ansible/role/d/49219.svg?color=blue)](https://galaxy.ansible.com/nl2go/kafka/)
 
 # Ansible Role: Apache Kafka
