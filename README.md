@@ -8,7 +8,7 @@
 
 An Ansible Role that manages installation and configuration of [Apache Kafka](https://kafka.apache.org/).
 
-Kafka heavily depends on zookeeper which is not part of this role. To install zoopeeper we recommend the nl2go [zookeeper role](https://github.com/nl2go/ansible-role-zookeeper): 
+Kafka heavily depends on [Apache ZooKeeper](https://zookeeper.apache.org/) which is not part of this role - use [nl2go.zookeeper](https://galaxy.ansible.com/nl2go/zookeeper) to install it. 
 
 ## Role Variables
 
