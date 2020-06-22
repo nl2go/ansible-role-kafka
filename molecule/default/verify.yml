@@ -17,7 +17,7 @@
       register: stat_log_result
       failed_when: not stat_log_result.stat.exists
     - name: Add a topic to the kafka server
-      command: /usr/local/kafka/bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test_default
+      command: /usr/local/kafka/bin/kafka-topics.sh --create --bootstrap-server {{ inventory_hostname }}:9092 --replication-factor 1 --partitions 1 --topic test_default
       register: create_topic_result
     - name: Verify topic creation return code
       assert:
@@ -28,7 +28,7 @@
         that:
           - "'Created topic test_default' in create_topic_result.stdout"
     - name: List topics from the kafka server
-      command: /usr/local/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
+      command: /usr/local/kafka/bin/kafka-topics.sh --list --bootstrap-server {{ inventory_hostname }}:9092
       register: list_topics_result
     - name: Verify topic listing return code
       assert:
