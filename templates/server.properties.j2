@@ -47,6 +47,19 @@ advertised.listeners={{ kafka_advertised_listeners }}
 listener.security.protocol.map={{ kafka_listener_security_protocol_map }}
 {% endif %}
 
+# Additional security and sasl related settings
+{% if kafka_security_inter_broker_protocol is defined %}
+security.inter.broker.protocol={{ kafka_security_inter_broker_protocol }}
+{% endif %}
+
+{% if kafka_sasl_mechanism_inter_broker_protocol is defined %}
+sasl.mechanism.inter.broker.protocol={{ kafka_sasl_mechanism_inter_broker_protocol }}
+{% endif %}
+
+{% if kafka_sasl_enabled_mechanisms is defined %}
+sasl.enabled.mechanisms={{ kafka_sasl_enabled_mechanisms }}
+{% endif %}
+
 # The number of threads that the server uses for receiving requests from the network and sending responses to the network
 num.network.threads={{ kafka_num_network_threads }}
 

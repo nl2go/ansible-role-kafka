@@ -1,0 +1,33 @@
+---
+- name: Create Kafka JAAS config file
+  template:
+    src: jaas.cfg.j2
+    dest: "{{ kafka_conf_dir }}/jaas.cfg"
+    mode: '0600'
+    owner: '{{ kafka_user }}'
+    group: '{{ kafka_group }}'
+  notify: Restart kafka
+
+- name: Add to kafka_environment_variables variable if it already exists
+  set_fact:
+    kafka_environment_variables: "{{ kafka_environment_variables | combine({'KAFKA_OPTS': '-Dzookeeper.sasl.clientconfig=ZooKeeperClient -Djava.security.auth.login.config=' + kafka_conf_dir + '/jaas.cfg'}) }}"
+
+- name: Set Kafka listeners variable
+  set_fact:
+    kafka_listeners: "SASL_PLAINTEXT://{{ kafka_host }}:9092"
+  when: kafka_listeners is not defined
+
+- name: Set Kafka inter-broker communication protocol
+  set_fact:
+    kafka_security_inter_broker_protocol: "SASL_PLAINTEXT"
+  when: kafka_security_inter_broker_protocol is not defined
+
+- name: Set SASL mechanism for Kafka inter-broker communication protocol
+  set_fact:
+    kafka_sasl_mechanism_inter_broker_protocol: "PLAIN"
+  when: kafka_sasl_mechanism_inter_broker_protocol is not defined
+
+- name: Set enabled SASL mechanisms for Kafka
+  set_fact:
+    kafka_sasl_enabled_mechanisms: "PLAIN"
+  when: kafka_sasl_enabled_mechanisms is not defined

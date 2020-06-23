@@ -1,16 +1,19 @@
 ---
+- import_tasks: sasl-auth.yml
+  tags: [kafka, kafka_config, config, sasl, auth]
+
+- name: Create environment file for Kafka systemd service
+  template:
+    src: kafka.env.j2
+    dest: "{{ kafka_conf_dir }}/kafka.env"
+    mode: '0644'
+  notify: Restart kafka
+
 - name: Create kafka server properties file
   template:
     src: server.properties.j2
     dest: "{{ kafka_conf_dir }}/server.properties"
-    mode: '0644'
-  notify: Restart kafka
-
-- name: Create JAAS config file
-  template:
-    src: jaas.cfg.j2
-    dest: "{{ kafka_conf_dir }}/jaas.cfg"
-    mode: '0600'
     owner: '{{ kafka_user }}'
     group: '{{ kafka_group }}'
+    mode: '0644'
   notify: Restart kafka

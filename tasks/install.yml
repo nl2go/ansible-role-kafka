@@ -46,13 +46,6 @@
     owner: '{{ kafka_user }}'
     group: '{{ kafka_group }}'
 
-- name: Create environment file for Kafka systemd service
-  template:
-    src: kafka.env.j2
-    dest: "{{ kafka_conf_dir }}/kafka.env"
-    mode: '0644'
-  notify: Restart kafka
-
 - name: Create kafka service
   template:
     src: kafka.service.j2
@@ -64,3 +57,4 @@
   systemd:
     name: kafka
     enabled: yes
+    daemon_reload: yes

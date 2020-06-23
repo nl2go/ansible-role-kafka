@@ -12,6 +12,7 @@ kafka_install_dir: /usr/local/kafka
 kafka_conf_dir: /etc/kafka
 kafka_log_dir: /var/log/kafka
 
+kafka_host: "{{ ansible_default_ipv4.address }}"
 ############################# Basic Kafka Settings
 
 # The number of threads that the server uses for receiving requests from the network and sending responses to the network
@@ -37,15 +38,20 @@ kafka_socket_request_max_bytes: 104857600
 #     listener_name://host_name:port
 #   EXAMPLE:
 #     PLAINTEXT://your.host.name:9092
-kafka_listeners: "PLAINTEXT://:9092"
+# kafka_listeners: "PLAINTEXT://:9092"
 
 # Hostname and port the broker will advertise to producers and consumers. If not set,
 # it uses the value for "listeners" if configured.  Otherwise, it will use the value
 # returned from java.net.InetAddress.getCanonicalHostName().
-kafka_advertised_listeners: "PLAINTEXT://{{ ansible_default_ipv4.address }}:9092"
+# kafka_advertised_listeners: "PLAINTEXT://{{ ansible_default_ipv4.address }}:9092"
 
 # Maps listener names to security protocols, the default is for them to be the same. See the config documentation for more details
 #kafka_listener_security_protocol_map: "PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL"
+
+# Additional optional security and sasl related settings
+#security.inter.broker.protocol=PLAINTEXT
+#sasl.mechanism.inter.broker.protocol=PLAIN
+#sasl.enabled.mechanisms=PLAIN
 
 # The default number of log partitions per topic. More partitions allow greater
 # parallelism for consumption, but this will also result in more files across
@@ -125,3 +131,9 @@ kafka_environment_variables: {}
 
 # Environment file that will be created by the role and used in the Kafka systemd service definition if kafka_environment_variables is defined
 kafka_environment_file: /etc/kafka/kafka.env
+
+kafka_server_username: broker
+kafka_server_password: broker
+kafka_client_users:
+  - username: guest
+    password: guest

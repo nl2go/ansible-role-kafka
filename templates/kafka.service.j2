@@ -6,10 +6,10 @@ Description=Apache Kafka service
 [Service]
 Type=simple
 User=kafka
-ExecStart=/bin/sh -c '{{ kafka_install_dir }}/bin/kafka-server-start.sh {{ kafka_conf_dir }}/server.properties > {{ kafka_log_dir }}/kafka.log 2>&1'
+ExecStart={{ kafka_install_dir }}/bin/kafka-server-start.sh {{ kafka_conf_dir }}/server.properties
 ExecStop={{ kafka_install_dir }}/bin/kafka-server-stop.sh
 Restart=on-abnormal
-EnvironmentFile="{{ kafka_conf_dir }}/kafka.env"
+EnvironmentFile={{ kafka_conf_dir }}/kafka.env
 
 [Install]
 WantedBy=multi-user.target
