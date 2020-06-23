@@ -17,7 +17,7 @@
           - 9092 in tcp_ports
     - name: Check that kafka log file exists
       stat:
-        path: /var/log/kafka/kafka.log
+        path: /var/log/kafka/server.log
       register: stat_log_result
       failed_when: not stat_log_result.stat.exists
     - name: Add a topic to the kafka server

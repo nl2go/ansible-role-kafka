@@ -11,6 +11,7 @@ KafkaClient {
     user_{{ client.username }}="{{ client.password }}"
 {% endfor %};
 };
+
 ZooKeeperClient {
        org.apache.zookeeper.server.auth.DigestLoginModule required
        username="{{ kafka_zookeeper_user }}"
