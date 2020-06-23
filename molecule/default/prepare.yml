@@ -10,3 +10,22 @@
     zookeeper_members: "{{ groups['zookeeper'] | map('extract', hostvars, 'ansible_default_ipv4') | map(attribute='address') | list }}"
   roles:
     - nl2go.zookeeper
+
+- name: Prepare Kafka client
+  hosts: kafka
+  tasks:
+    - name: Create Kafka JAAS client config
+      copy:
+        content: |
+          KafkaClient {
+            org.apache.kafka.common.security.plain.PlainLoginModule required
+            username="{{ kafka_client_users[0].username }}"
+            password="{{ kafka_client_users[0].password }}";
+          };
+        dest: "{{ kafka_test_client_sasl_conf }}"
+    - name: Create Kafka client config
+      copy:
+        content: |
+          security.protocol=SASL_PLAINTEXT
+          sasl.mechanism=PLAIN
+        dest: "{{ kafka_test_client_conf }}"

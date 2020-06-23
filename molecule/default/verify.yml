@@ -21,7 +21,11 @@
       register: stat_log_result
       failed_when: not stat_log_result.stat.exists
     - name: Add a topic to the kafka server
-      command: "/usr/local/kafka/bin/kafka-topics.sh --create --bootstrap-server {{ kafka_host }}:9092 --replication-factor 3 --partitions 1 --topic {{ topic_name }}"
+      environment:
+        KAFKA_OPTS: "-Djava.security.auth.login.config={{ kafka_conf_dir }}/jaas.cfg"
+      command: "/usr/local/kafka/bin/kafka-topics.sh \
+        --create --bootstrap-server {{ kafka_host }}:9092 --replication-factor 3 --partitions 1 --topic {{ topic_name }} \
+        --command-config {{ kafka_test_client_conf }}"
       register: create_topic_result
       run_once: yes
     - name: Verify topic creation return code
@@ -33,7 +37,11 @@
         that:
           - "'Created topic {{ topic_name }}' in create_topic_result.stdout"
     - name: List topics from the kafka server
-      command: "/usr/local/kafka/bin/kafka-topics.sh --list --bootstrap-server {{ kafka_host }}:9092"
+      environment:
+        KAFKA_OPTS: "-Djava.security.auth.login.config={{ kafka_conf_dir }}/jaas.cfg"
+      command: "/usr/local/kafka/bin/kafka-topics.sh \
+        --list --bootstrap-server {{ kafka_host }}:9092 \
+        --command-config {{ kafka_test_client_conf }}"
       register: list_topics_result
       changed_when: no
     - name: Verify topic listing return code
