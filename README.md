@@ -22,6 +22,7 @@ Available variables listed and described along with default values in [defaults/
 
     - hosts: all
       roles:
+        - nl2go.openjdk
         - nl2go.kafka
       vars:
         kafka_zookeeper_connection_hosts:
@@ -37,6 +38,7 @@ Here is an example playbook:
 
     - hosts: all
       roles:
+        - nl2go.openjdk
         - nl2go.kafka
       vars:
         kafka_environment_variables:
