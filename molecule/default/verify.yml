@@ -1,7 +1,11 @@
 ---
 - name: Verify kafka installation
-  hosts: all
+  hosts: kafka
   tasks:
+    - name: Create random topic name
+      set_fact:
+        topic_name: "{{ 9999999999999999999999 | random | to_uuid }}"
+      run_once: yes
     - name: Gather facts on listening ports
       listen_ports_facts:
     - name: Create list of listening ports
@@ -17,8 +21,9 @@
       register: stat_log_result
       failed_when: not stat_log_result.stat.exists
     - name: Add a topic to the kafka server
-      command: /usr/local/kafka/bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic test_default
+      command: "/usr/local/kafka/bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 3 --partitions 1 --topic {{ topic_name }}"
       register: create_topic_result
+      run_once: yes
     - name: Verify topic creation return code
       assert:
         that:
@@ -26,10 +31,11 @@
     - name: Verify topic creation output
       assert:
         that:
-          - "'Created topic test_default' in create_topic_result.stdout"
+          - "'Created topic {{ topic_name }}' in create_topic_result.stdout"
     - name: List topics from the kafka server
       command: /usr/local/kafka/bin/kafka-topics.sh --list --bootstrap-server localhost:9092
       register: list_topics_result
+      changed_when: no
     - name: Verify topic listing return code
       assert:
         that:
@@ -37,4 +43,4 @@
     - name: Verify created topic is in topic list
       assert:
         that:
-          - "'test_default' in list_topics_result.stdout"
+          - "'{{ topic_name }}' in list_topics_result.stdout"

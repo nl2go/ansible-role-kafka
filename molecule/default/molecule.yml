@@ -1,36 +1,70 @@
 ---
 driver:
-  name: docker
+  name: hetznercloud
 lint: |
   set -e
   yamllint .
 platforms:
-  - name: debian10
-    image: debian:10
-    dockerfile: ../resources/Dockerfile.j2
-    networks:
-      - name: kafka-network
-  - name: ubuntu18
-    image: ubuntu:18.04
-    dockerfile: ../resources/Dockerfile.j2
-    networks:
-      - name: kafka-network
+  - name: ${MOLECULE_TEST_SCOPE:-default}-zk-1
+    server_type: cx11
+    image: ${MOLECULE_PLATFORM-debian-10}
+    groups:
+      - zookeeper
+  - name: ${MOLECULE_TEST_SCOPE:-default}-zk-2
+    server_type: cx11
+    image: ${MOLECULE_PLATFORM-debian-10}
+    groups:
+      - zookeeper
+  - name: ${MOLECULE_TEST_SCOPE:-default}-zk-3
+    server_type: cx11
+    image: ${MOLECULE_PLATFORM-debian-10}
+    groups:
+      - zookeeper
+  - name: ${MOLECULE_TEST_SCOPE:-default}-kfk-1
+    server_type: cx11
+    image: ${MOLECULE_PLATFORM-debian-10}
+    groups:
+      - kafka
+  - name: ${MOLECULE_TEST_SCOPE:-default}-kfk-2
+    server_type: cx11
+    image: ${MOLECULE_PLATFORM-debian-10}
+    groups:
+      - kafka
+  - name: ${MOLECULE_TEST_SCOPE:-default}-kfk-3
+    server_type: cx11
+    image: ${MOLECULE_PLATFORM-debian-10}
+    groups:
+      - kafka
 provisioner:
   name: ansible
-  lint: |
-    set -e
-    ansible-lint
+  config_options:
+    defaults:
+      interpreter_python: auto_silent
   inventory:
     group_vars:
       all:
+        kafka_zookeeper_connection_hosts: "{{ groups['zookeeper'] | map('extract', hostvars, 'ansible_host') | map('regex_replace', '^(.*)', '\\1:2181') | list }}"
         kafka_version: 2.5.0
+        zookeeper_members: "{{ groups['zookeeper'] | map('extract', hostvars, 'ansible_default_ipv4') | map(attribute='address') | list }}"
     host_vars:
-      debian10:
-        kafka_zookeeper_connection_hosts:
-          - zookeeper-debian10:2181
-      ubuntu18:
-        kafka_zookeeper_connection_hosts:
-          - zookeeper-ubuntu18:2181
+      "${MOLECULE_TEST_SCOPE:-default}-kfk-1":
+        kafka_broker_id: 1
+      "${MOLECULE_TEST_SCOPE:-default}-kfk-2":
+        kafka_broker_id: 2
+      "${MOLECULE_TEST_SCOPE:-default}-kfk-3":
+        kafka_broker_id: 3
+      "${MOLECULE_TEST_SCOPE:-default}-zk-1":
+        zookeeper_member_id: 1
+      "${MOLECULE_TEST_SCOPE:-default}-zk-2":
+        zookeeper_member_id: 2
+      "${MOLECULE_TEST_SCOPE:-default}-zk-3":
+        zookeeper_member_id: 3
+  lint: |
+    set -e
+    ansible-lint
+  playbooks:
+    create: ../resources/playbooks/create.yml
+    destroy: ../resources/playbooks/destroy.yml
 verifier:
   name: ansible
   lint: |

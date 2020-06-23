@@ -3,36 +3,10 @@
   hosts: all
   roles:
     - nl2go.openjdk
-  tasks:
-    - name: Prepare docker systemctl replacement script
-      get_url:
-        url: https://raw.githubusercontent.com/gdraheim/docker-systemctl-replacement/master/files/docker/systemctl.py
-        dest: /usr/bin/systemctl
-        mode: '0775'
-    - name: Start zookeeper container for Debian 10 host
-      docker_container:
-        name: zookeeper-debian10
-        image: confluentinc/cp-zookeeper:5.5.0
-        env:
-          ZOOKEEPER_CLIENT_PORT: "2181"
-          ZOOKEEPER_TICK_TIME: "2000"
-        networks:
-          - name: kafka-network
-      delegate_to: localhost
-      run_once: true
-    - name: Start zookeeper container for Ubuntu18 host
-      docker_container:
-        name: zookeeper-ubuntu18
-        image: confluentinc/cp-zookeeper:5.5.0
-        env:
-          ZOOKEEPER_CLIENT_PORT: "2181"
-          ZOOKEEPER_TICK_TIME: "2000"
-        networks:
-          - name: kafka-network
-      delegate_to: localhost
-      run_once: true
-    - name: Install additional packages needed for testing
-      apt:
-        name:
-          - net-tools
-          - procps
+
+- name: Install ZooKeeper
+  hosts: zookeeper
+  vars:
+    zookeeper_members: "{{ groups['zookeeper'] | map('extract', hostvars, 'ansible_default_ipv4') | map(attribute='address') | list }}"
+  roles:
+    - nl2go.zookeeper

@@ -1,6 +1,6 @@
 ---
 - name: Configure hosts
-  hosts: all
+  hosts: kafka
   become: yes
   roles:
     - role: ansible-role-kafka
