@@ -52,3 +52,11 @@
       assert:
         that:
           - "'{{ topic_name }}' in list_topics_result.stdout"
+    - name: Test JMX connection
+      shell: echo "exit" | java -jar /opt/jmxterm.jar -l {{ kafka_host }}:1099
+      register: jmx_status
+      changed_when: no
+    - name: Verify JMX connection
+      assert:
+        that:
+          - "'Welcome to JMX terminal' in jmx_status.stderr"
