@@ -52,11 +52,25 @@
       assert:
         that:
           - "'{{ topic_name }}' in list_topics_result.stdout"
-    - name: Test JMX connection
+    - name: Test JMX connection without authentication
       shell: echo "exit" | java -jar /opt/jmxterm.jar -l {{ kafka_host }}:1099
-      register: jmx_status
+      register: jmx_status_noauth
       changed_when: no
+      ignore_errors: yes
+    - name: Verify JMX status without authentication failed
+      assert:
+        that:
+          - jmx_status_noauth.rc == 1
+    - name: Test JMX connection with authentication
+      shell: echo "exit" | java -jar /opt/jmxterm.jar -l {{ kafka_host }}:1099 -u jmx -p molecule
+      register: jmx_status_auth
+      changed_when: no
+      ignore_errors: yes
+    - name: Verify JMX status with authentication succeeds
+      assert:
+        that:
+          - jmx_status_auth.rc == 0
     - name: Verify JMX connection
       assert:
         that:
-          - "'Welcome to JMX terminal' in jmx_status.stderr"
+          - "'Welcome to JMX terminal' in jmx_status_auth.stderr"

@@ -7,7 +7,7 @@
     src: kafka.env.j2
     dest: "{{ kafka_conf_dir }}/kafka.env"
     mode: '0644'
-  notify: Restart kafka
+  notify: Restart Kafka
 
 - name: Create kafka server properties file
   template:
@@ -16,4 +16,24 @@
     owner: '{{ kafka_user }}'
     group: '{{ kafka_group }}'
     mode: '0644'
-  notify: Restart kafka
+  notify: Restart Kafka
+
+- name: Create JMX password file
+  template:
+    src: jmxremote.password.j2
+    dest: "{{ kafka_conf_dir }}/jmxremote.password"
+    mode: '0600'
+    owner: kafka
+    group: kafka
+  notify: Restart Kafka
+  when: kafka_jmx_enabled and kafka_jmx_username is defined and kafka_jmx_password is defined
+
+- name: Create JMX access file
+  template:
+    src: jmxremote.access.j2
+    dest: "{{ kafka_conf_dir }}/jmxremote.access"
+    mode: '0600'
+    owner: kafka
+    group: kafka
+  notify: Restart Kafka
+  when: kafka_jmx_enabled and kafka_jmx_username is defined

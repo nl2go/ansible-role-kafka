@@ -6,7 +6,7 @@
     mode: '0600'
     owner: '{{ kafka_user }}'
     group: '{{ kafka_group }}'
-  notify: Restart kafka
+  notify: Restart Kafka
 
 - name: Add to kafka_environment_variables variable if it already exists
   set_fact:

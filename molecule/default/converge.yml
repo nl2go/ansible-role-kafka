@@ -5,6 +5,4 @@
   roles:
     - role: ansible-role-kafka
       vars:
-        kafka_environment_variables:
-          JMX_PORT: 1099
-          KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+        kafka_jmx_enabled: true

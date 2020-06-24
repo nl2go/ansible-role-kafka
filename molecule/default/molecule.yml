@@ -53,6 +53,9 @@ provisioner:
         kafka_zookeeper_connection_hosts: "{{ groups['zookeeper'] | map('extract', hostvars, 'ansible_host') | map('regex_replace', '^(.*)', '\\1:2181') | list }}"
         kafka_version: 2.5.0
         zookeeper_members: "{{ groups['zookeeper'] | map('extract', hostvars, 'ansible_default_ipv4') | map(attribute='address') | list }}"
+      kafka:
+        kafka_jmx_username: jmx
+        kafka_jmx_password: molecule
     host_vars:
       "${MOLECULE_TEST_SCOPE:-default}-kfk-1":
         kafka_broker_id: 1
