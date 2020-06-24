@@ -30,21 +30,17 @@
     group: '{{ kafka_group }}'
     state: link
 
-- name: Create kafka log dir
+- name: Create kafka directories
   file:
-    path: "{{ kafka_log_dir }}"
+    path: "{{ item }}"
     state: directory
     mode: '0755'
     owner: '{{ kafka_user }}'
     group: '{{ kafka_group }}'
-
-- name: Create kafka config dir
-  file:
-    path: "{{ kafka_conf_dir }}"
-    state: directory
-    mode: '0755'
-    owner: '{{ kafka_user }}'
-    group: '{{ kafka_group }}'
+  loop:
+    - "{{ kafka_data_dir }}"
+    - "{{ kafka_log_dir }}"
+    - "{{ kafka_conf_dir }}"
 
 - name: Create kafka service
   template:
