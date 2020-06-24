@@ -1,4 +1,16 @@
 ---
+- name: Create kafka group
+  group:
+    name: '{{ kafka_group }}'
+    state: present
+
+- name: Create kafka user
+  user:
+    name: '{{ kafka_user }}'
+    group: '{{ kafka_group }}'
+    state: present
+    createhome: no
+
 - name: Set kafka_archive_name variable
   set_fact:
     kafka_archive_name: "kafka_{{ kafka_scala_version }}-{{ kafka_version }}"
@@ -18,31 +30,27 @@
     group: '{{ kafka_group }}'
     state: link
 
-- name: Create kafka log dir
+- name: Create kafka directories
   file:
-    path: "{{ kafka_log_dir }}"
+    path: "{{ item }}"
     state: directory
     mode: '0755'
     owner: '{{ kafka_user }}'
     group: '{{ kafka_group }}'
-
-- name: Create environment file for kafka systemd service
-  lineinfile:
-    path: "{{ kafka_environment_file }}"
-    regexp: '^{{ item.key }}='
-    line: "{{ item.key }}={{ item.value }}"
-    create: yes
-  loop: "{{ kafka_environment_variables | default({}) | dict2items }}"
-  when: kafka_environment_variables is defined
+  loop:
+    - "{{ kafka_data_dir }}"
+    - "{{ kafka_log_dir }}"
+    - "{{ kafka_conf_dir }}"
 
 - name: Create kafka service
   template:
     src: kafka.service.j2
     dest: "/etc/systemd/system/kafka.service"
     mode: '0644'
-  notify: Reload kafka
+  notify: Restart kafka
 
 - name: Enable kafka service
   systemd:
     name: kafka
     enabled: yes
+    daemon_reload: yes

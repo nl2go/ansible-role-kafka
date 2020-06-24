@@ -1,26 +1,13 @@
 ---
-- name: Create kafka group
-  group:
-    name: '{{ kafka_group }}'
-    state: present
-
-- name: Create kafka user
-  user:
-    name: '{{ kafka_user }}'
-    group: '{{ kafka_group }}'
-    state: present
-    createhome: no
-
-- name: Create kafka config dir
-  file:
-    path: "{{ kafka_conf_dir }}"
-    state: directory
-    owner: '{{ kafka_user }}'
-    group: '{{ kafka_group }}'
-    mode: '0755'
-
 - import_tasks: sasl-auth.yml
   tags: [kafka, kafka_config, config, sasl, auth]
+
+- name: Create environment file for Kafka systemd service
+  template:
+    src: kafka.env.j2
+    dest: "{{ kafka_conf_dir }}/kafka.env"
+    mode: '0644'
+  notify: Restart kafka
 
 - name: Create kafka server properties file
   template:
@@ -29,4 +16,4 @@
     owner: '{{ kafka_user }}'
     group: '{{ kafka_group }}'
     mode: '0644'
-  notify: Reload kafka
+  notify: Restart kafka
