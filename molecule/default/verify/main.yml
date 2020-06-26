@@ -1,0 +1,7 @@
+---
+- name: Verify Kafka installation
+  hosts: kafka
+  tasks:
+    - include_tasks: base.yml
+    - include_tasks: create_topic.yml
+    - include_tasks: jmx.yml

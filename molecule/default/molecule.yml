@@ -76,6 +76,7 @@ provisioner:
   playbooks:
     create: ../resources/playbooks/create.yml
     destroy: ../resources/playbooks/destroy.yml
+    verify: verify/main.yml
 verifier:
   name: ansible
   lint: |
