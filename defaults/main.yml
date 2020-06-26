@@ -135,7 +135,7 @@ kafka_client_users:
 
 # JMX related settings
 kafka_jmx_enabled: false
-kafka_jmx_host: "{{ kafka_host }}"
+kafka_jmx_host: localhost
 kafka_jmx_port: 1099
 kafka_jmx_rmi_port: 1099
 kafka_jmx_role: readonly
