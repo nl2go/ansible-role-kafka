@@ -28,9 +28,9 @@ Available variables listed and described along with default values in [defaults/
         kafka_zookeeper_connection_hosts:
           - my.zookeeper.host:2181
 
-## Set up monitoring for Kafka
+## Set up custom JVM parameters
 
-For enabling monitoring via JMX you use the `kafka_environment_variables` variable to adjust the respective Kafka settings.
+For adjusting JVM parameters you use the `kafka_environment_variables` variable to adjust the respective Kafka settings.
 
 An overview of the variables used by Kafka can be found in the [Kafka startup script](https://github.com/apache/kafka/blob/trunk/bin/kafka-run-class.sh).
 
@@ -42,8 +42,24 @@ Here is an example playbook:
         - nl2go.kafka
       vars:
         kafka_environment_variables:
-          JMX_PORT: 1099
-          KAFKA_JMX_OPTS: "-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false"
+          KAFKA_HEAP_OPTS="-Xmx192M"
+
+## Set up monitoring for Kafka
+
+For enabling monitoring via JMX you use the `kafka_jmx_enabled` variable. Additionally you can enable JMX authentication
+by setting `kafka_jmx_username` and `kafka_jmx_password`. If you leave the authentication variables undefined JMX will
+be set up without authentication.
+
+Here is an example playbook:
+
+    - hosts: all
+      roles:
+        - nl2go.openjdk
+        - nl2go.kafka
+      vars:
+        kafka_jmx_enabled: true
+        kafka_jmx_username: jmx
+        kafka_jmx_password: jmxpass
 
 ## Development
 

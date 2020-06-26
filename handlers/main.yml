@@ -1,5 +1,5 @@
 ---
-- name: Restart kafka
+- name: Restart Kafka
   systemd:
     name: kafka
     state: restarted

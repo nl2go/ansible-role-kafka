@@ -1,0 +1,15 @@
+---
+- name: Gather facts on listening ports
+  listen_ports_facts:
+- name: Create list of listening ports
+  set_fact:
+    tcp_ports: "{{ ansible_facts.tcp_listen | map(attribute='port') | sort | list }}"
+- name: Verify Kafka port is in listening ports
+  assert:
+    that:
+      - 9092 in tcp_ports
+- name: Check that Kafka log file exists
+  stat:
+    path: /var/log/kafka/server.log
+  register: stat_log_result
+  failed_when: not stat_log_result.stat.exists
