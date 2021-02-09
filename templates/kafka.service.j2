@@ -6,6 +6,7 @@ Description=Apache Kafka service
 [Service]
 Type=simple
 User=kafka
+LimitNOFILE={{ kafka_LimitNOFILE }}
 ExecStart={{ kafka_install_dir }}/bin/kafka-server-start.sh {{ kafka_conf_dir }}/server.properties
 ExecStop={{ kafka_install_dir }}/bin/kafka-server-stop.sh
 Restart=on-abnormal
