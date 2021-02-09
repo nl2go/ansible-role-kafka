@@ -14,7 +14,6 @@ kafka_data_dir: /var/lib/kafka
 kafka_log_dir: /var/log/kafka
 
 kafka_host: "{{ ansible_default_ipv4.address }}"
-kafka_LimitNOFILE: 10000
 ############################# Basic Kafka Settings
 
 # The number of threads that the server uses for receiving requests from the network and sending responses to the network
@@ -63,6 +62,9 @@ kafka_num_partitions: 1
 # The number of threads per data directory to be used for log recovery at startup and flushing at shutdown.
 # This value is recommended to be increased for installations with data dirs located in RAID array.
 kafka_num_recovery_threads_per_data_dir: 1
+
+# The limit on number of open files.
+kafka_limit_number_of_open_files: 10000
 
 ############################# Internal Topic Settings
 
