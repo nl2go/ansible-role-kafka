@@ -63,6 +63,9 @@ kafka_num_partitions: 1
 # This value is recommended to be increased for installations with data dirs located in RAID array.
 kafka_num_recovery_threads_per_data_dir: 1
 
+# The limit on number of open files.
+kafka_limit_number_of_open_files: 10000
+
 ############################# Internal Topic Settings
 
 # The replication factor for the group metadata internal topics "__consumer_offsets" and "__transaction_state"
