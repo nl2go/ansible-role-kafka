@@ -4,8 +4,8 @@ kafka_apache_mirror_base_url: https://mirror.netcologne.de/apache.org
 kafka_user: kafka
 kafka_group: kafka
 
-kafka_version: 2.5.0
-kafka_scala_version: 2.12
+kafka_version: 2.7.0
+kafka_scala_version: 2.13
 kafka_broker_id: 1 # must be set to a unique integer for each broker
 
 kafka_install_dir: /usr/local/kafka

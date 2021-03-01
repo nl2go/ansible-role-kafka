@@ -7,6 +7,7 @@
 - name: Install ZooKeeper
   hosts: zookeeper
   vars:
+    zookeeper_version: 3.6.2
     zookeeper_members: "{{ groups['zookeeper'] | map('extract', hostvars, 'ansible_default_ipv4') | map(attribute='address') | list }}"
   roles:
     - nl2go.zookeeper
