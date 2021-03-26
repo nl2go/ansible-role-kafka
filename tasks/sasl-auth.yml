@@ -20,7 +20,9 @@
 - name: Set Kafka inter-broker communication protocol
   set_fact:
     kafka_security_inter_broker_protocol: "SASL_PLAINTEXT"
-  when: kafka_security_inter_broker_protocol is not defined
+  when: 
+    - kafka_security_inter_broker_protocol is not defined
+    - kafka_listener_security_protocol_map is not defined
 
 - name: Set SASL mechanism for Kafka inter-broker communication protocol
   set_fact:
