@@ -76,12 +76,6 @@ kafka_transaction_state_log_min_isr: 1
 
 ############################# Log Flush Policy
 
-# The number of messages to accept before forcing a flush of data to disk
-kafka_log_flush_interval_messages: 10000
-
-# The maximum amount of time a message can sit in a log before we force a flush
-kafka_log_flush_interval_ms: 1000
-
 ############################# Log Retention Policy
 
 # The minimum age of a log file to be eligible for deletion due to age
@@ -93,6 +87,9 @@ kafka_log_retention_bytes: 1073741824
 
 # The maximum size of a log segment file. When this size is reached a new log segment will be created.
 kafka_log_segment_bytes: 1073741824
+
+# The largest size of the message that can be received by the broker from a producer.
+kafka_message_max_bytes: 10000000
 
 # The interval at which log segments are checked to see if they can be deleted according
 # to the retention policies
