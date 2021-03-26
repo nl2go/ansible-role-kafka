@@ -46,9 +46,6 @@ inter.broker.listener.name={{ kafka_inter_broker_listener_name }}
 advertised.listeners={{ kafka_advertised_listeners }}
 {% endif %}
 
-# 
-inter.broker.listener.name
-
 # Maps listener names to security protocols, the default is for them to be the same. See the config documentation for more details
 #listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
 {% if kafka_listener_security_protocol_map is defined %}
