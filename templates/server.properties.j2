@@ -33,6 +33,11 @@ broker.id={{ kafka_broker_id }}
 listeners={{ kafka_listeners }}
 {% endif %}
 
+# Kafka brokers communicate between themselves, usually on the internal network. To define which listener to use, The host/IP used must be accessible from the broker machine to others.
+{% if kafka_inter_broker_listener_name is defined %}
+inter.broker.listener.name={{ kafka_inter_broker_listener_name }}
+{% endif %}
+
 # Hostname and port the broker will advertise to producers and consumers. If not set,
 # it uses the value for "listeners" if configured.  Otherwise, it will use the value
 # returned from java.net.InetAddress.getCanonicalHostName().
@@ -40,6 +45,9 @@ listeners={{ kafka_listeners }}
 {% if kafka_advertised_listeners is defined %}
 advertised.listeners={{ kafka_advertised_listeners }}
 {% endif %}
+
+# 
+inter.broker.listener.name
 
 # Maps listener names to security protocols, the default is for them to be the same. See the config documentation for more details
 #listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
