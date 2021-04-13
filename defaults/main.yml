@@ -1,6 +1,6 @@
 ---
 kafka_apache_mirror_base_url: https://mirror.netcologne.de/apache.org
-
+kafka_enable_topic_deletion: true
 kafka_user: kafka
 kafka_group: kafka
 
