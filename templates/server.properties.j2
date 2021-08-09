@@ -19,7 +19,9 @@
 
 # The id of the broker. This must be set to a unique integer for each broker.
 broker.id={{ kafka_broker_id }}
-
+{% if kafka_rack_name is defined %}
+broker.rack={{ kafka_rack_name }}
+{% endif %}
 ############################# Socket Server Settings #############################
 
 # The address the socket server listens on. It will get the value returned from
