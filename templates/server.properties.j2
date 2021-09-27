@@ -138,6 +138,12 @@ log.segment.bytes={{ kafka_log_segment_bytes }}
 # to the retention policies
 log.retention.check.interval.ms={{ kafka_log_retention_check_interval_ms }}
 
+# After a consumer group loses all its consumers (i.e. becomes empty) its
+# offsets will be kept for this retention period before getting discarded. For
+# standalone consumers (using manual assignment), offsets will be expired after
+# the time of last commit plus this retention period.
+offsets.retention.minutes={{ kafka_offset_retention_minutes }}
+
 ############################# Zookeeper #############################
 
 # Zookeeper connection string (see zookeeper docs for details).
