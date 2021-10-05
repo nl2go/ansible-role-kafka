@@ -95,6 +95,12 @@ kafka_message_max_bytes: 10000000
 # to the retention policies
 kafka_log_retention_check_interval_ms: 300000
 
+# After a consumer group loses all its consumers (i.e. becomes empty) its
+# offsets will be kept for this retention period before getting discarded. For
+# standalone consumers (using manual assignment), offsets will be expired after
+# the time of last commit plus this retention period.
+#kafka_offset_retention_minutes: 10080
+
 ############################# Zookeeper related Kafka settings
 
 kafka_zookeeper_connection_hosts:
