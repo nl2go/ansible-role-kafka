@@ -48,6 +48,13 @@ inter.broker.listener.name={{ kafka_inter_broker_listener_name }}
 advertised.listeners={{ kafka_advertised_listeners }}
 {% endif %}
 
+# Enable or disable the hot topic deletion. By default it is set to false. As a result
+# when a topic is deleted it stay in a pending state forever. When set to true the topic 
+# is immediately deleted when the delete action is trigered.
+{% if kafka_enable_topic_deletion is defined %}
+delete.topic.enable="{{ kafka_enable_topic_deletion }}"
+{% endif %}
+
 # Maps listener names to security protocols, the default is for them to be the same. See the config documentation for more details
 #listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
 {% if kafka_listener_security_protocol_map is defined %}
