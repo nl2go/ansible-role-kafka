@@ -56,6 +56,8 @@ provisioner:
         kafka_jmx_host: localhost
         kafka_jmx_username: jmx
         kafka_jmx_password: molecule
+        kafka_listener_security_protocol_map: "SASL_PLAINTEXT:SASL_PLAINTEXT,REPLICATION:SASL_PLAINTEXT"
+        kafka_listeners: "SASL_PLAINTEXT://{{ kafka_host }}:9092,REPLICATION://{{ kafka_host }}:9093"
         kafka_inter_broker_listener_name: "REPLICATION"
     host_vars:
       "${MOLECULE_TEST_SCOPE:-default}-kfk-1":
