@@ -12,11 +12,8 @@
     path: /var/log/kafka/server.log
   register: stat_log_result
   failed_when: not stat_log_result.stat.exists
-- name: print all variables/facts
-  debug:
-    var: hostvars[inventory_hostname]
 - name: save last lines of kafka server log
-  shell: tail /var/log/kafka/server.log
+  shell: tail -40 /var/log/kafka/server.log
   register: log_tail
 - name: print last lines of kafka server log
   debug:
