@@ -52,7 +52,7 @@ advertised.listeners={{ kafka_advertised_listeners }}
 # when a topic is deleted it stay in a pending state forever. When set to true the topic 
 # is immediately deleted when the delete action is trigered.
 {% if kafka_enable_topic_deletion is defined %}
-delete.topic.enable="{{ kafka_enable_topic_deletion }}"
+delete.topic.enable={{ kafka_enable_topic_deletion | lower }}
 {% endif %}
 
 # Maps listener names to security protocols, the default is for them to be the same. See the config documentation for more details
