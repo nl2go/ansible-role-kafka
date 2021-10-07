@@ -7,12 +7,21 @@
 - name: print list of ports
   debug:
     msg: "{{ ansible_facts.tcp_listen | map(attribute='port') | sort | list }}"
-- name: Verify Kafka port is in listening ports
-  assert:
-    that:
-      - 9092 in tcp_ports
 - name: Check that Kafka log file exists
   stat:
     path: /var/log/kafka/server.log
   register: stat_log_result
   failed_when: not stat_log_result.stat.exists
+- name: print all variables/facts
+  debug:
+    var: hostvars[inventory_hostname]
+- name: save last lines of kafka server log
+  shell: tail /var/log/kafka/server.log
+  register: log_tail
+- name: print last lines of kafka server log
+  debug:
+    var: log_tail
+- name: Verify Kafka port is in listening ports
+  assert:
+    that:
+      - 9092 in tcp_ports
