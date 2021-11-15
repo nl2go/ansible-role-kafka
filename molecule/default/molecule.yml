@@ -59,6 +59,7 @@ provisioner:
         kafka_listener_security_protocol_map: "SASL_PLAINTEXT:SASL_PLAINTEXT,REPLICATION:SASL_PLAINTEXT"
         kafka_listeners: "SASL_PLAINTEXT://{{ kafka_host }}:9092,REPLICATION://{{ kafka_host }}:9093"
         kafka_inter_broker_listener_name: "REPLICATION"
+        kafka_enable_topic_auto_creation: false
     host_vars:
       "${MOLECULE_TEST_SCOPE:-default}-kfk-1":
         kafka_broker_id: 1
