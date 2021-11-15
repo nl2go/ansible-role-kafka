@@ -55,6 +55,12 @@ advertised.listeners={{ kafka_advertised_listeners }}
 delete.topic.enable={{ kafka_enable_topic_deletion | lower }}
 {% endif %}
 
+# Enable auto creation of topic on the server.
+#auto.create.topics.enable=true
+{% if kafka_enable_topic_auto_creation is defined %}
+auto.create.topics.enable={{ kafka_enable_topic_auto_creation | lower }}
+{% endif %}
+
 # Maps listener names to security protocols, the default is for them to be the same. See the config documentation for more details
 #listener.security.protocol.map=PLAINTEXT:PLAINTEXT,SSL:SSL,SASL_PLAINTEXT:SASL_PLAINTEXT,SASL_SSL:SASL_SSL
 {% if kafka_listener_security_protocol_map is defined %}
